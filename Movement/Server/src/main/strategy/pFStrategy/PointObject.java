@@ -2,13 +2,30 @@ package main.strategy.pFStrategy;
 
 import main.Runner;
 
-//basic Point class includes x,y
+/**
+ * basic Point based Object class includes x,y
+ * 
+ * @author Behzad
+ * 
+ */
 public class PointObject extends Vector implements Object {
 
 	private final double power;
 	private final double infl_distance;
 	private final double alpha;
 
+	/**
+	 * constructs a point based object.
+	 * 
+	 * @param x
+	 *            x position of the object.
+	 * @param y
+	 *            y position of the object.
+	 * @param power
+	 *            repulsive/attractive power of the object.
+	 * @param infl_distance
+	 *            influence distance of the object when it is an obstacle.
+	 */
 	public PointObject(double x, double y, double power, double infl_distance) {
 		super(x, y);
 		this.power = power;
@@ -16,6 +33,20 @@ public class PointObject extends Vector implements Object {
 		this.alpha = 1;
 	}
 
+	/**
+	 * constructs a point based object.
+	 * 
+	 * @param x
+	 *            x position of the object.
+	 * @param y
+	 *            y position of the object.
+	 * @param power
+	 *            repulsive/attractive power of the object.
+	 * @param infl_distance
+	 *            influence distance of the object when it is an obstacle.
+	 * @param alpha
+	 *            alpha parameter for extended potential field algorithm.
+	 */
 	public PointObject(double x, double y, double power, double infl_distance,
 			double alpha) {
 		super(x, y);
@@ -24,16 +55,37 @@ public class PointObject extends Vector implements Object {
 		this.alpha = alpha;
 	}
 
+	/**
+	 * Constructs a point based object.
+	 * 
+	 * @param point
+	 *            position of the obstacle.
+	 * @param power
+	 *            repulsive/attractive power of the object.
+	 * @param infl_distance
+	 *            influence distance of the object when it is an obstacle.
+	 */
 	public PointObject(Point point, double power, double infl_distance) {
 		this(point.getX(), point.getY(), power, infl_distance);
 	}
 
+	/**
+	 * Constructs a point based object.
+	 * 
+	 * @param point
+	 *            position of the obstacle.
+	 * @param power
+	 *            repulsive/attractive power of the object.
+	 * @param infl_distance
+	 *            influence distance of the object when it is an obstacle.
+	 * @param alpha
+	 *            alpha parameter for extended potential field algorithm.
+	 */
 	public PointObject(Point point, double power, double infl_distance,
 			double alpha) {
 		this(point.getX(), point.getY(), power, infl_distance, alpha);
 	}
 
-	// Get vector for normal Potential Field algorithm
 	@Override
 	public Vector getVector(Point point, boolean repulsive) {
 		if (repulsive) {
@@ -64,7 +116,6 @@ public class PointObject extends Vector implements Object {
 		return super.toString();
 	}
 
-	// Get vector for extended Potential Field algorithm
 	@Override
 	public Vector getVector(Pos point, boolean repulsive) {
 		if (repulsive) {
@@ -75,40 +126,42 @@ public class PointObject extends Vector implements Object {
 					* (this.getY() - point.getLocation().getY()));
 			if (Runner.DEBUG) {
 				System.out.println("obstacle Distance:" + distance);
-				System.out.println("PFPlanning::PointObject::inf_distance:"+infl_distance);
-			}		
-			if (distance < infl_distance & power!=0) {
-				try
-				{
-				Vector out_point = new Vector(point.getLocation());
-				out_point = this.subtract(out_point);
-				double angle = Math.atan2(out_point.getY(), out_point.getX());
-				double diffAngle = Math.abs(angle - point.getAngle());
-				double norm = Util.map2Pi(diffAngle);
-				System.out.println("Angle: " + norm);
-				double p = power * (1 / distance - 1 / infl_distance)
-						* (1 / (distance * distance)) * (1 / distance)
-						* ((Math.PI - norm) / (Math.PI)) * alpha;
-				return out_point.mult(-1 * p);
-				}
-				catch(Exception ex)
-				{
-					System.out.println("PFPlanning::PointObject::Exception thrown");
+				System.out.println("PFPlanning::PointObject::inf_distance:"
+						+ infl_distance);
+			}
+			if (distance < infl_distance & power != 0) {
+				try {
+					Vector out_point = new Vector(point.getLocation());
+					out_point = this.subtract(out_point);
+					double angle = Math.atan2(out_point.getY(), out_point
+							.getX());
+					double diffAngle = Math.abs(angle - point.getAngle());
+					double norm = Util.map2Pi(diffAngle);
+					System.out.println("Angle: " + norm);
+					double p = power * (1 / distance - 1 / infl_distance)
+							* (1 / (distance * distance)) * (1 / distance)
+							* ((Math.PI - norm) / (Math.PI)) * alpha;
+					return out_point.mult(-1 * p);
+				} catch (Exception ex) {
+					System.out
+							.println("PFPlanning::PointObject::Exception thrown");
 					return new Vector(new Point(0, 0));
 				}
 			} else
 				return new Vector(new Point(0, 0));
 		} else {
-			
-			
+
 			Vector out_point = new Vector(point.getLocation());
-			Vector res=out_point.subtract(this);
-				System.out.println("goal Distance:" + res.size());
-			Vector final_res=res.mult(power * -1);
-			if (Runner.DEBUG){
-				System.out.println("PFPlanning::PointObject::attractive Force:"+final_res);
-				System.out.println("PFPlanning::PointObject::current:"+out_point);
-				System.out.println("PFPlanning::PointObject::destination:"+this);
+			Vector res = out_point.subtract(this);
+			System.out.println("goal Distance:" + res.size());
+			Vector final_res = res.mult(power * -1);
+			if (Runner.DEBUG) {
+				System.out.println("PFPlanning::PointObject::attractive Force:"
+						+ final_res);
+				System.out.println("PFPlanning::PointObject::current:"
+						+ out_point);
+				System.out.println("PFPlanning::PointObject::destination:"
+						+ this);
 			}
 			return final_res;
 		}

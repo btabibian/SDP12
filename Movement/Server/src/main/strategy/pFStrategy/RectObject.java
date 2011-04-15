@@ -1,7 +1,11 @@
 package main.strategy.pFStrategy;
 
-//A rectangle based object which calculates repulsive vector given that a surface is 
-//considered.
+/**
+ * A rectangular object which calculates repulsive vector.
+ * 
+ * @author Behzad
+ * 
+ */
 public class RectObject implements Object {
 
 	private final double power;
@@ -9,6 +13,18 @@ public class RectObject implements Object {
 	private final Point p1;
 	private final Point p2;
 
+	/**
+	 * constructs a rectangular object.
+	 * 
+	 * @param p1
+	 *            top left of the rectangle.
+	 * @param p2
+	 *            bottom right of the rectangle
+	 * @param power
+	 *            repulsive power of the object.
+	 * @param infl_distance
+	 *            influance distance that this object can affect.
+	 */
 	public RectObject(Point p1, Point p2, double power, double infl_distance) {
 		this.p1 = p1;
 		this.p2 = p2;
@@ -17,10 +33,20 @@ public class RectObject implements Object {
 
 	}
 
+	/**
+	 * gets top left point of the object.
+	 * 
+	 * @return top left point of the object.
+	 */
 	public Point getp1() {
 		return p1;
 	}
 
+	/**
+	 * gets bottom right of the object.
+	 * 
+	 * @return bottom right of the object.
+	 */
 	public Point getp2() {
 		return p2;
 	}
@@ -49,10 +75,6 @@ public class RectObject implements Object {
 		return "Point1: " + p1.toString() + ",Point2: " + p2.toString();
 	}
 
-	// This is getVector function for rectangle shaped object of extended
-	// potential field. This is going to be implemented in the future.
-	// for the time being it simply returns normal PF vecotr.
-	@Override
 	public Vector getVector(Pos point, boolean repulsive) {
 
 		return getVector(point.getLocation(), repulsive);

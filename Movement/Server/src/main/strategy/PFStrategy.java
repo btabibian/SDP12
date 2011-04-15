@@ -59,9 +59,9 @@ public class PFStrategy extends AbstractStrategy implements Strategy {
 		//ball=new Point(260,80);
 		Point goal=new Point(data.getGoal().getX(),data.getGoal().getY());
 		// getting new velocity vectors
-		VelocityVec vector = planner.update(current, opponent,goal, ball,
+		VelocityVec vector = planner.update(current, opponent, ball,
 				false);
-		Vector orig_vector = planner.update(current, opponent,goal, ball,
+		Vector orig_vector = planner.update(current, opponent, ball,
 				true);
 		double dist=Math.sqrt((ball.getX()-current.getLocation().getX())*(ball.getX()-current.getLocation().getX())+
 		(ball.getY()-current.getLocation().getY())*(ball.getY()-current.getLocation().getY()));

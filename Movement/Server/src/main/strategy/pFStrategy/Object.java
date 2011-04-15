@@ -1,10 +1,34 @@
 package main.strategy.pFStrategy;
 
-//basic object for any object in the arena.
+/**
+ * Object interface.
+ * 
+ * @author Behzad
+ * 
+ */
 public interface Object {
-	// return the repulsive/attractive vector given an object in a position.
+	/**
+	 * calculates repulsive/attractive forces from this object using potential
+	 * field algorithm.
+	 * 
+	 * @param point
+	 *            the point that potential vectors will be computed against.
+	 * @param repulsive
+	 *            if set repulsive vector is calculated.
+	 * @return calculated vector.
+	 */
 	public Vector getVector(Point point, boolean repulsive);
 
+	/**
+	 * calculates repulsive/attractive forces from this object using extended
+	 * potential field algorithm.
+	 * 
+	 * @param point
+	 *            the point that potential vectors will be computed against.
+	 * @param repulsive
+	 *            if set repulsive vector is calculated.
+	 * @return calculated vector.
+	 */
 	public Vector getVector(Pos point, boolean repulsive);
 
 }
