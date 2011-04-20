@@ -1,3 +1,22 @@
+/*
+    This file is part of Implementation of SDP Group 12 Vision program.
+
+    Implementation of SDP Group 12 Vision is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Implementation of SDP Group 12 Vision is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Implementation of SDP Group 12 Vision.  If not, see <http://www.gnu.org/licenses/>.
+  
+    University of Edinburgh, hereby disclaims all copyright interest in the program 
+    "SDP Group 12 Vision" written by Behzad Tabibian.
+*/
 #ifndef OBJECTDETECTION_H_
 #define OBJECTDETECTION_H_
 #include <cvaux.h>
