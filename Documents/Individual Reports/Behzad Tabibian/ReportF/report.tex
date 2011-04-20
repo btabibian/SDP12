@@ -452,7 +452,7 @@ This method is based on calculating main inertial axes, around which the object 
 \mu'_{11} = \mu_{11} / \mu_{00} = M_{11}/M_{00} - \bar{x}\bar{y} \\
 \Theta = \frac{1}{2} \arctan2 \left( {2\mu'_{11}},{\mu'_{20} - \mu'_{02}} \right) \label{orientationEq}
 \end{align}
-One can observe that equation \ref{orientationEq} produces results from 0 - $\pi$. This method cannot compute the heading of the calculated orientation vector, to disambiguate this issue I used one of the methods developed earlier. This method uses central moments of the object and the circle fitted around the object to calculate the orientation\ref{fig:CircleMethod}. Even though the method was not robust against noise but it was effective in deciding the heading of the calculated orientation using the method discussed earlier. 
+One can observe that equation \ref{orientationEq} produces results from $-\pi/2$ - $\pi/2$. This method cannot compute the heading of the calculated orientation vector, to disambiguate this issue I used one of the methods developed earlier. This method uses central moments of the object and the circle fitted around the object to calculate the orientation\ref{fig:CircleMethod}. Even though the method was not robust against noise but it was effective in deciding the heading of the calculated orientation using the method discussed earlier. 
 \begin{figure}[htp]
 \begin{center}
 \leavevmode
@@ -468,7 +468,7 @@ Our initial implementations had a very poor performance of about 5 frames per se
 
 A few other achievements in this part of the project was to learn how to use OpenCV library effectively in C and having the chance to learn about Bayes and SVM classifiers and compare their performance in an actual project.
 
-This part of the code-base is completely documented and open-sourced. Open-sourced library contains:
+This part of the code-base is completely documented and open-sourced \footnote{https://sites.google.com/site/btabibian/projects/sdp}. Open-sourced library contains:
 \begin{itemize}
 \item Various methods of object isolation methods such as background subtraction and color segmentation.
 \item Various methods of calculating orientation as described earlier.
@@ -510,7 +510,7 @@ A few important lessons were learned during implementation of this algorithm:
 \begin{itemize}
 \item It is possible to implement reliable applications based on ideas developed in research labs.
 \item Failure of an algorithm at higher levels sometimes may be due to invalid inputs from lower layers.
-\item Simulation at abstract level is very useful for making sure that an algorithm is developed according to specification but successful performance is heavily affected by limitations and amount of noise in real environments.
+\item Simulation at abstract level is very useful for making sure that an algorithm is developed according to specification but successful performance is heavily affected by limitations of robot physics and the noise in real environments. Source code for this part of the code base with its documentation is available on-line \footnote{https://sites.google.com/site/btabibian/projects/sdp}
 \end{itemize}   
 \begin{figure}[htp]
 \begin{center}
@@ -520,7 +520,7 @@ A few important lessons were learned during implementation of this algorithm:
 \end{center}
 \end{figure}
 
-I also wrote an article about how robots performance is evaluated in competitions , such as RoboCup, based on my experiences as a Technical Committee member of RoboCup competitions. This article is submitted for evaluation and if accepted will be published in next issue of EUSci magazine, It can help improve the course in next year.
+I also wrote an article about how robots performance is evaluated in competitions , such as RoboCup, based on my experiences as a Technical Committee member of RoboCup competitions. This article is submitted for evaluation and if accepted will be published in next issue of EUSci magazine.
 \begin{figure}[!bp]
 \begin{center}
 %\includegraphics[width=0.5\textwidth] {Seq1.png}
