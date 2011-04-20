@@ -483,11 +483,11 @@ I also contributed to motion planning layer of the agent. Soon after I started w
 \subsection{Potential Field}
 I started with implementing basic idea of Potential Fields\cite{paper:PF} algorithm. This algorithm is a well-known algorithm for robot path planning. It has several important properties which makes it suitable for our application.The main advantage of this method is that it is completely reactive and therefore if it is fed with noisy input in one cycle it will be able to recover in next cycles and therefore performance of the algorithm degrades as amount of noise increases without complete failure.
 \subsection{Abstract Simulation}
-Since I started working on this idea from the very beginning of the project and I haven't had access to a complete simulation environment of the arena or the actual robot with reliable input data. Therefore I implemented a simple forward kinematic of a non-holonimic differential drive robot(basic kinematic model of our robot) in Matlab and used it to test my implementation. With some changes this basic simulation was later used for development of a complete simulation environment.
+I haven't had access to a complete simulation environment of the arena or the actual robot with reliable input data to work with when started working on this algorithm. Therefore I implemented a simple forward kinematic of a non-holonimic differential drive robot(basic kinematic model of our robot) in Matlab and used it to test my implementation. With some changes this basic simulation was later used for development of a complete simulation environment.
 \subsection{Challenges}
-During implementation of this method I had several challenges. We started testing this algorithm in milestone two and it failed. The initial intuition for most of the members was that the failure was due to complexity of this algorithm however, later we realized that the failure was due to unreliable input data from vision stack. Later team decided to abandon this idea and work on a simpler ideas. I continued working on this algorithm and also implemented extended potential field\cite{paper:OKhatib}. Once, vision stack become robust enough to provide reliable input I started testing the algorithm again. In the second attempt we observed a very good performance of the algorithm which become a key to our success in third and forth friendly matches.
+During implementation of this method I had several challenges. We started testing this algorithm in milestone two and it failed. The initial intuition for most of the members was that the failure was due to complexity of the algorithm however, later we realized that the failure was due to unreliable input data from vision stack. Later team decided to abandon this idea and work on a simpler ideas. I continued working on this algorithm and also implemented extended potential field\cite{paper:OKhatib}. Once, vision stack become robust enough to provide reliable input I started testing the algorithm again. In the second attempt we observed a very good performance of the algorithm which become a key to our success in third and forth friendly matches.
 \subsection{Kinematic Model and Implementation}
-Part of successful implementation of potential field algorithm was to apply calculated velocity vector on the robot. To do so I used the model described earlier to decompose the vector into linear and angular velocities. The calculation is based on following equations and figure \ref{fig:KinModel}:
+Part of successful implementation of potential field algorithm was to apply calculated velocity vector on the robot. To do so I used the model described earlier to decompose the velocity vector into linear and angular velocities. The calculation is based on following equations and figure \ref{fig:KinModel}:
 \begin{figure}[htp]
 \begin{center}
 \leavevmode
@@ -504,13 +504,17 @@ V_{angular} = {1 \over \begin{Vmatrix}v\end{Vmatrix}} \theta
 \end{align}
 Integrating all this I was able to implement a successful motion planning algorithm which made our team distinguished from conventional methods of controlling robot in this project.
 \subsection{Results and Lessons Learned}
-An example result of running this algorithm is demonstrated in figures \ref{fig:seq}, In overall this algorithm could deal with many scenarios successfully and integrated with high level decision making layer we could obtain reliable game plays.
-Developed algorithm was not completely used specially the ability to avoid obstacles was completely abandoned because obstacle avoidance was dealt by higher levels of decision making.Therefore the algorithm at this level is a conventional P controller. Users of this implementation can also utilize its capabilities in obstacle avoidance by following the complete documentation.
+An example result of running this algorithm on the robot is demonstrated in figure \ref{fig:seq}, In overall this algorithm could deal with many scenarios successfully and integrated with high level decision making layer we could obtain reliable game plays.
+
+Developed algorithm was not completely used specifically the ability to avoid obstacles was completely abandoned because obstacle avoidance was dealt with by higher levels of decision making.Therefore the algorithm at this level is a conventional P controller. 
+Users of this implementation can also utilize its capabilities in obstacle avoidance by following the documentation.
 A few important lessons were learned during implementation of this algorithm:
 \begin{itemize}
 \item It is possible to implement reliable applications based on ideas developed in research labs.
 \item Failure of an algorithm at higher levels sometimes may be due to invalid inputs from lower layers.
-\item Simulation at abstract level is very useful for making sure that an algorithm is developed according to specification but successful performance is heavily affected by limitations of robot physics and the noise in real environments. Source code for this part of the code base with its documentation is available on-line \footnote{https://sites.google.com/site/btabibian/projects/sdp}
+\item Simulation at abstract level is very useful for making sure that an algorithm is developed according to specification but successful performance on the robot is heavily affected by limitations of robot physics and the noise in real environment.
+
+Source code of this part of the code base with its documentation is available on-line.\footnote{https://sites.google.com/site/btabibian/projects/sdp}
 \end{itemize}   
 \begin{figure}[htp]
 \begin{center}
