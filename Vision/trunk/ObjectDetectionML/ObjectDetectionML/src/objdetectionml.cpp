@@ -12,7 +12,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Implementation of ARFL.  If not, see <http://www.gnu.org/licenses/>.
+    along with Implementation of SDP Group 12 Vision.  If not, see <http://www.gnu.org/licenses/>.
   
     University of Edinburgh, hereby disclaims all copyright interest in the program 
     "SDP Group 12 Vision" written by Behzad Tabibian.
