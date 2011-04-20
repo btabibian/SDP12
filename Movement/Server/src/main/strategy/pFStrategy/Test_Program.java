@@ -51,19 +51,6 @@ public class Test_Program {
 				.getX(), bottom_right.getY() + wall_Thickness), default_power,
 				Double.MAX_VALUE);
 		System.out.println("Bottom wall:" + bottom_wall.toString());
-		// plann.AddObjects(left_wall);
-		// plann.AddObjects(right_wall);
-		// plann.AddObjects(top_wall);
-		// plann.AddObjects(bottom_wall);
-
-		// Point robot=new Point(.5*10,0.5*50);
-
-		// opponent=null;
-		// ball=null;
-		// ouput_allVectors(top_left, bottom_right,ball,opponent,
-		// plann,0.5,false);
-		// 100,380,180,400,380,700,380
-
 		output_path(initPos, 1, ball, opponent, plann, conf);
 
 	}

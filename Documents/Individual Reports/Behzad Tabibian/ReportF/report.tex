@@ -430,6 +430,14 @@
 \section{Introduction}
 \vspace{-1 mm}
 In this paper I will cover most of my achievements in System Design Project. One of my goals in this project was to build a solution based on research efforts in the field of robotic. Having this goal in mind, my main focus was on perception layer of the agent and optimal low level motion planning.
+\begin{figure}[htp]
+\begin{center}
+\leavevmode
+\includegraphics[width=0.3\textwidth] {AgentArch.png}
+\end{center}
+\caption{Agent architecture}
+\label{fig:agent}
+\end{figure} 
 \vspace{-3 mm}
 \section{Team Organization}
 \vspace{-1 mm}
@@ -437,11 +445,11 @@ In this paper I will cover most of my achievements in System Design Project. One
 Implementing concrete and clear communication channels between team members was one the major challenges in this project. We used several tools to communicate between team members, share source code and task assignment. A wiki-like website \footnote{https://sites.google.com/site/edisdp12} helped us to organize tasks and share design decisions. Also we used subversion for sharing developed code. A complete and detailed track of my progress through out the course of development are available on-line\footnote{https://sites.google.com/site/edisdp12/logs/behzad-tabibian}.
 \vspace{-1 mm}
 \section{Perception Layer}
-Perception is the way in which an agent understands the environment. In this project, robots were able to percept the environment using the overhead camera. Using the images provided by the camera we were able to calculate locations and orientations(hereafter called pos) of robot and opponent, ball location on the pitch and the pitch itself.
+Perception is the way in which an agent understands the environment. In this project, robots were able to percept the environment using the overhead camera. Using the images provided by the camera we were able to calculate locations and orientations(hereafter called pos) of robot, Figure \ref{fig:robot} and opponent, ball location on the pitch and the pitch itself.
 \subsection{Initial approach}
 Finding locations of different objects proved to be an easy task by using simple methods like color segmentation and available algorithms in OpenCV. However, the main challenge was in calculating robot orientation. First, I tried to use the dark spot and the \textbf{T} on the plate. This method was not very successful since isolating two objects with sufficient accuracy to calculate accurate orientation was not an easy task.
 \subsection{Machine Learning}
-At this point, I decided to test solutions based on Machine-Learning methods, I implemented different solutions using SVM and Bayse algorithms available in OpenCV. I used a range of features for training a model for each object. Some of them include: set of hue moments, compactness and area. I also used distance between two objects, by using this feature I was able to first find a principal object \textbf{T} and then using the distance feature find the correct dark spot close to this object.
+At this point, I decided to test solutions based on Machine-Learning methods, I implemented different solutions using SVM and Bayse algorithms available in OpenCV. I used a range of features for training a model for each object. Some of them include: set of hue moments, compactness and area. I also used distance between two objects, by using this feature I was able to first find a principal object \textbf{T} and then use distance feature to find correct dark spot close to the \textbf{T}.
 \subsection{Central Image Moments}
 Even though I could build a reliable solution based on the idea discussed earlier, I realised that for problem of this size, there should be simpler methods available, therefore I spent more time studying methods of calculating orientation of objects and after a few attempts I implemented a method using second order of central image moments.
 This method is based on calculating main inertial axes, around which the object can be rotated with minimal or maximal inertia. For detailed description of this method refer to \cite{Teague:80}. Using this method orientation of an object is computed using following equations:
@@ -452,23 +460,24 @@ This method is based on calculating main inertial axes, around which the object 
 \mu'_{11} = \mu_{11} / \mu_{00} = M_{11}/M_{00} - \bar{x}\bar{y} \\
 \Theta = \frac{1}{2} \arctan2 \left( {2\mu'_{11}},{\mu'_{20} - \mu'_{02}} \right) \label{orientationEq}
 \end{align}
-One can observe that equation \ref{orientationEq} produces results from $-\pi/2$ - $\pi/2$. This method cannot compute the heading of the calculated orientation vector, to disambiguate this issue I used one of the methods developed earlier. This method uses central moments of the object and the circle fitted around the object to calculate the orientation\ref{fig:CircleMethod}. Even though the method was not robust against noise but it was effective in deciding the heading of the calculated orientation using the method discussed earlier. 
+One can observe that equation \ref{orientationEq} produces results from $-\pi/2$ - $\pi/2$. This method cannot compute the heading of the calculated orientation vector, to disambiguate this issue I used one of the methods developed earlier. This method uses central moments of the image and the circle fitted around the object to calculate the orientation\ref{fig:CircleMethod}. Even though the latter method alone was not robust against noise but it was effective in deciding the heading of the calculated orientation using the former method. 
 \begin{figure}[htp]
 \begin{center}
 \leavevmode
-\includegraphics[width=0.2\textwidth] {CenOrien.png}
+\includegraphics[width=0.15\textwidth] {CenOrien.png}
 \end{center}
-\caption{Calculating orientation using center of mass of object and surrounding circle, used as a helper for second order of central moments}
+\caption{Calculating orientation using center of mass of object and surrounding circle}
 \label{fig:CircleMethod}
 \end{figure} 
 \subsection{Results and Lessons learned}
-We used this method during later tests, milestones and matches. Successful implementation of the solution was one of the keys to our success in milestone 3(score 70) and first friendly match(becoming semi-finalist).
+We used this method during later tests, milestones and matches. Successful implementation of the solution was one of the keys to our success in milestone 3(score 70) and first friendly match(becoming semi-finalist),Figure \ref{fig:visionres}.
 
 Our initial implementations had a very poor performance of about 5 frames per second, however by the end of the project and using simpler methods we reached frame rates of over 22fps. Our program however suffered from major drops in frame rates on some specific machines in the lab, we could not successfully resolve the issue as the problem was not easily reproducible. This issue was one the major reasons we could not perform very well in the final match.
 
 A few other achievements in this part of the project was to learn how to use OpenCV library effectively in C and having the chance to learn about Bayes and SVM classifiers and compare their performance in an actual project.
 
-This part of the code-base is completely documented and open-sourced \footnote{https://sites.google.com/site/btabibian/projects/sdp}. Open-sourced library contains:
+This part of the code-base is completely documented and open-sourced \footnote{https://sites.google.com/site/btabibian/projects/sdp}. Open-sourced library contains.
+A few lessons learned from this part of the project.
 \begin{itemize}
 \item Various methods of object isolation methods such as background subtraction and color segmentation.
 \item Various methods of calculating orientation as described earlier.
@@ -481,13 +490,13 @@ This part of the code-base is completely documented and open-sourced \footnote{h
 \vspace{-1 mm}
 I also contributed to motion planning layer of the agent. Soon after I started working on vision stack I realised that to have a robust performance for robot we need a robust low level motion planning algorithm. This layer should be able to deal effectively with the noise incurred by the vision stack. The simple goal for this part is to make robot capable of following a path to reach a destination position determined by higher levels of path planning stack.
 \subsection{Potential Field}
-I started with implementing basic idea of Potential Fields\cite{paper:PF} algorithm. This algorithm is a well-known algorithm for robot path planning. It has several important properties which makes it suitable for our application.The main advantage of this method is that it is completely reactive and therefore if it is fed with noisy input in one cycle it will be able to recover in next cycles and therefore performance of the algorithm degrades as amount of noise increases without complete failure.
+I started with implementing Potential Fields\cite{paper:PF} algorithm. This algorithm is a well-known algorithm for robot path planning. It has several important properties which makes it suitable for our application.The main advantage of this method is that it is completely reactive, if fed with noisy input in one cycle it will be able to recover in next cycles. Therefore performance of the algorithm degrades as amount of noise increases without complete failure.
 \subsection{Abstract Simulation}
-I haven't had access to a complete simulation environment of the arena or the actual robot with reliable input data to work with when started working on this algorithm. Therefore I implemented a simple forward kinematic of a non-holonimic differential drive robot(basic kinematic model of our robot) in Matlab and used it to test my implementation. With some changes this basic simulation was later used for development of a complete simulation environment.
+I haven't had access to a complete simulation environment of the arena or the actual robot with reliable input data when started working on this algorithm. Therefore, I implemented a simple forward kinematic of a non-holonimic differential drive robot(basic kinematic model of our robot) in Matlab and used it to test my implementation. With some changes this basic simulation was later used for development of a complete simulation environment.
 \subsection{Challenges}
-During implementation of this method I had several challenges. We started testing this algorithm in milestone two and it failed. The initial intuition for most of the members was that the failure was due to complexity of the algorithm however, later we realized that the failure was due to unreliable input data from vision stack. Later team decided to abandon this idea and work on a simpler ideas. I continued working on this algorithm and also implemented extended potential field\cite{paper:OKhatib}. Once, vision stack become robust enough to provide reliable input I started testing the algorithm again. In the second attempt we observed a very good performance of the algorithm which become a key to our success in third and forth friendly matches.
+During implementation of this method the team faced several challenges. We started testing this algorithm in milestone two but we failed. The initial intuition for most of the members was that the failure was due to complexity of the algorithm however, later we realized that the failure was due to unreliable input data from vision stack. Later, team decided to abandon this idea and work on a simpler ideas. I continued working on this algorithm and also implemented extended potential field\cite{paper:OKhatib}, Figure \ref{fig:Epfs}. Once, vision stack become robust enough to provide reliable input I started testing the algorithm again. In the second attempt we observed a very good performance of the algorithm and used it as part of the agent implementation for the rest of competitions.
 \subsection{Kinematic Model and Implementation}
-Part of successful implementation of potential field algorithm was to apply calculated velocity vector on the robot. To do so I used the model described earlier to decompose the velocity vector into linear and angular velocities. The calculation is based on following equations and figure \ref{fig:KinModel}:
+To successfully implement potential field algorithm we also need to find a way to apply calculated velocity vector on the robot. To do so, I used the model described earlier to decompose the velocity vector into linear and angular velocities. The calculation is based on following equations and figure \ref{fig:KinModel}:
 \begin{figure}[htp]
 \begin{center}
 \leavevmode
@@ -496,44 +505,81 @@ Part of successful implementation of potential field algorithm was to apply calc
 \caption{Kinematic Model of Non-holonomic Differential Drive Robot}
 \label{fig:KinModel}
 \end{figure}
-
 \begin{align}
 V & =k_{att}.(Pos_{current}-Pos_{destination})\\
 V_{linear} &= \begin{Vmatrix}v\end{Vmatrix} cos(\theta) ,
-V_{angular} = {1 \over \begin{Vmatrix}v\end{Vmatrix}} \theta
+V_{angular} = {K\theta \over \pi}\\
+V_{left}&=V_{Linear}-rsin(V_{Angular})\\
+V_{right}&=V_{Linear}+rsin(V_{Angular})
 \end{align}
-Integrating all this I was able to implement a successful motion planning algorithm which made our team distinguished from conventional methods of controlling robot in this project.
+Integrating this layer with higher levels made our team distinguished from others in terms of robot control.
 \subsection{Results and Lessons Learned}
 An example result of running this algorithm on the robot is demonstrated in figure \ref{fig:seq}, In overall this algorithm could deal with many scenarios successfully and integrated with high level decision making layer we could obtain reliable game plays.
 
 Developed algorithm was not completely used specifically the ability to avoid obstacles was completely abandoned because obstacle avoidance was dealt with by higher levels of decision making.Therefore the algorithm at this level is a conventional P controller. 
-Users of this implementation can also utilize its capabilities in obstacle avoidance by following the documentation.
+Users of this implementation can also utilize its capabilities in obstacle avoidance scenarios using the documentation provided with code-base.
 A few important lessons were learned during implementation of this algorithm:
 \begin{itemize}
 \item It is possible to implement reliable applications based on ideas developed in research labs.
 \item Failure of an algorithm at higher levels sometimes may be due to invalid inputs from lower layers.
 \item Simulation at abstract level is very useful for making sure that an algorithm is developed according to specification but successful performance on the robot is heavily affected by limitations of robot physics and the noise in real environment.
-
-Source code of this part of the code base with its documentation is available on-line.\footnote{https://sites.google.com/site/btabibian/projects/sdp}
-\end{itemize}   
-\begin{figure}[htp]
-\begin{center}
-\includegraphics[width=0.25\textwidth] {Final.jpg}
-\caption{Complete Robot movements from start position to destination position.}
-\label{fig:seq}
-\end{center}
-\end{figure}
-
+\end{itemize}
+Source code of this part of the code base with relevant documentation is available on-line.\footnote{https://sites.google.com/site/btabibian/projects/sdp}
 I also wrote an article about how robots performance is evaluated in competitions , such as RoboCup, based on my experiences as a Technical Committee member of RoboCup competitions. This article is submitted for evaluation and if accepted will be published in next issue of EUSci magazine.
 \begin{figure}[!bp]
 \begin{center}
-%\includegraphics[width=0.5\textwidth] {Seq1.png}
-\includegraphics[width=0.5\textwidth] {Seq2.png}
+\subfigure[]{\includegraphics[width=0.125\textwidth] {step1.jpg}}
+\subfigure[]{\includegraphics[width=0.125\textwidth] {step2.jpg}}
+\subfigure[]{\includegraphics[width=0.125\textwidth] {step3.jpg}}
+\subfigure[]{\includegraphics[width=0.125\textwidth] {Final.jpg}}
 \caption{A sequence of robot movements from start position to destination.}
+\label{fig:seq}
 \end{center}
 \end{figure}
+\pagebreak
+\section{Appendix}
 \bibliographystyle{IEEEtran}
 \bibliography{bibliography}
+
+\subsection*{Figures}
+\begin{figure}[htp]
+\begin{center}
+\leavevmode
+\includegraphics[width=0.5\textwidth] {robotimage.jpg}
+\label{fig:robot}
+\end{center}
+\caption{Robot on the pitch}
+\end{figure}
+
+\begin{figure}[htp]
+\begin{center}
+\leavevmode
+\includegraphics[width=0.3\textwidth] {vision.jpg}
+\end{center}
+\caption{An example image demonstrating locations and orientation of objects on the pitch.}
+\label{fig:visionres}
+\end{figure}
+
+\begin{figure}[htp]
+\begin{center}
+\leavevmode
+\includegraphics[width=0.5\textwidth] {PF-goal.png}
+\end{center}
+\caption{Potential vectors around destination position}
+\label{fig:PFvectors}
+\end{figure}
+
+\begin{figure}[htp]
+\begin{center}
+\leavevmode
+\includegraphics[width=0.5\textwidth] {pfs-fixed.png}
+\end{center}
+\caption{Simulated robot path produced by Potential Field algorithm and Extended Potential Field in presence of and obstacle.}
+\label{fig:Epfs}
+\end{figure}
+
+
+
 
 % An example of a floating figure using the graphicx package.
 % Note that \label must occur AFTER (or within) \caption.
